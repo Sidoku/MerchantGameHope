@@ -631,7 +631,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a1fa42034133b444bfe1514573335b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+<<<<<<< Updated upstream
   BridgeObject: {fileID: 1612329784}
+=======
+  BridgeObject: {fileID: 2053802274}
+>>>>>>> Stashed changes
 --- !u!61 &664420722
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1644,7 +1648,7 @@ HingeJoint2D:
   m_ConnectedAnchor: {x: 0.0000000655671, y: -2.5430005}
   m_UseMotor: 1
   m_Motor:
-    m_MotorSpeed: 0
+    m_MotorSpeed: 0.5
     m_MaximumMotorForce: 10000
   m_UseLimits: 1
   m_AngleLimits:
