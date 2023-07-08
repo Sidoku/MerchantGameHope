@@ -12,11 +12,16 @@ namespace Cainos.PixelArtTopDown_Basic
         [SerializeField][Range(0, 1)] private float currentStamina;
         [SerializeField][Range(0, 0.2f)] private float sprintStaminaLoss;
         [SerializeField] private float staminaRegen;
+        [SerializeField] private GameObject staminaBar;
+        [SerializeField] private SpriteRenderer staminaFill;
+        [SerializeField] private float maxWidth;
 
         [SerializeField] private Rigidbody2D rb;
+        private Vector2 dir;
 
         private enum MoveState
         {
+            Recovering,
             Walking,
             Sprinting
         }
@@ -34,6 +39,7 @@ namespace Cainos.PixelArtTopDown_Basic
 
         private void Start()
         {
+            maxWidth = staminaFill.size.x;
             currentStamina = 1;
             moveState = MoveState.Walking;
             animator = GetComponent<Animator>();
@@ -48,48 +54,66 @@ namespace Cainos.PixelArtTopDown_Basic
 
         private void Update()
         {
-            moveState = Input.GetKey(KeyCode.LeftShift) ? MoveState.Sprinting : MoveState.Walking;
-            Vector2 dir = Vector2.zero;
-            if (Input.GetKey(KeyCode.A))
+            if(moveState != MoveState.Recovering)
             {
-                dir.x = -1;
-                animator.SetInteger("Direction", 3);
-            }
-            else if (Input.GetKey(KeyCode.D))
-            {
-                dir.x = 1;
-                animator.SetInteger("Direction", 2);
-            }
+                moveState = Input.GetKey(KeyCode.LeftShift) ? MoveState.Sprinting : MoveState.Walking;
+                dir = Vector2.zero;
+                if (Input.GetKey(KeyCode.A))
+                {
+                    dir.x = -1;
+                    animator.SetInteger("Direction", 3);
+                }
+                else if (Input.GetKey(KeyCode.D))
+                {
+                    dir.x = 1;
+                    animator.SetInteger("Direction", 2);
+                }
 
-            if (Input.GetKey(KeyCode.W))
-            {
-                dir.y = 1;
-                animator.SetInteger("Direction", 1);
-            }
-            else if (Input.GetKey(KeyCode.S))
-            {
-                dir.y = -1;
-                animator.SetInteger("Direction", 0);
-            }
-            /*if(Input.GetKey(KeyCode.Space))
-            {
-                Jump(1.0f, 0.0f);
-            }*/
+                if (Input.GetKey(KeyCode.W))
+                {
+                    dir.y = 1;
+                    animator.SetInteger("Direction", 1);
+                }
+                else if (Input.GetKey(KeyCode.S))
+                {
+                    dir.y = -1;
+                    animator.SetInteger("Direction", 0);
+                }
+                /*if(Input.GetKey(KeyCode.Space))
+                {
+                    Jump(1.0f, 0.0f);
+                }*/
 
-            dir.Normalize();
-            animator.SetBool("IsMoving", dir.magnitude > 0);
-
-            if (moveState == MoveState.Sprinting && currentStamina > 0)
-            {
-                currentStamina -= sprintStaminaLoss * Time.deltaTime;
-                rb.velocity = sprintSpeed * dir;
+                dir.Normalize();
+                animator.SetBool("IsMoving", dir.magnitude > 0);
+                if (moveState == MoveState.Sprinting && currentStamina > 0 && dir != Vector2.zero)
+                {
+                    currentStamina -= sprintStaminaLoss * Time.deltaTime;
+                    rb.velocity = sprintSpeed * dir;
+                }
+                else
+                {
+                    currentStamina += staminaRegen * Time.deltaTime;
+                    rb.velocity = moveSpeed * dir;
+                }
             }
             else
             {
+                if (currentStamina >= 1)
+                {
+                    moveState = MoveState.Walking;
+                }
                 currentStamina += staminaRegen * Time.deltaTime;
-                rb.velocity = moveSpeed * dir;
             }
+            
             currentStamina = Mathf.Clamp(currentStamina, 0, 1);
+            staminaBar.SetActive(!(currentStamina >= 1));
+            staminaFill.size = new Vector2(currentStamina * maxWidth, staminaFill.size.y);
+            if (currentStamina <= 0)
+            {
+                rb.velocity = Vector2.zero;
+                moveState = MoveState.Recovering;
+            }
         }
 
        /* public void Jump(float jumpHeightScale, float jumpPushScale)
