@@ -631,8 +631,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a1fa42034133b444bfe1514573335b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BridgeObject: {fileID: 2053802274}
-  bridgeJoint: {fileID: 2053802275}
+  BridgeObject: {fileID: 1612329784}
 --- !u!61 &664420722
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -643,7 +642,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -716,7 +715,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5628018141983903116, guid: ef67ba864d1ecc042b5f4cf48455c0a6, type: 3}
       propertyPath: m_IsTrigger
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5628018141983903119, guid: ef67ba864d1ecc042b5f4cf48455c0a6, type: 3}
       propertyPath: speed
@@ -837,11 +836,11 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 1612329785}
     m_Modifications:
     - target: {fileID: 6320040181030696419, guid: 663796d1f1a18b54682ef167c20789e7, type: 3}
       propertyPath: m_RootOrder
-      value: 8
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6320040181030696419, guid: 663796d1f1a18b54682ef167c20789e7, type: 3}
       propertyPath: m_LocalScale.x
@@ -853,15 +852,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6320040181030696419, guid: 663796d1f1a18b54682ef167c20789e7, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 0.01
       objectReference: {fileID: 0}
     - target: {fileID: 6320040181030696419, guid: 663796d1f1a18b54682ef167c20789e7, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.043
+      value: 1.497
       objectReference: {fileID: 0}
     - target: {fileID: 6320040181030696419, guid: 663796d1f1a18b54682ef167c20789e7, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -0.12799788
       objectReference: {fileID: 0}
     - target: {fileID: 6320040181030696419, guid: 663796d1f1a18b54682ef167c20789e7, type: 3}
       propertyPath: m_LocalRotation.w
@@ -869,11 +868,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6320040181030696419, guid: 663796d1f1a18b54682ef167c20789e7, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 6320040181030696419, guid: 663796d1f1a18b54682ef167c20789e7, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 6320040181030696419, guid: 663796d1f1a18b54682ef167c20789e7, type: 3}
       propertyPath: m_LocalRotation.z
@@ -897,6 +896,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 663796d1f1a18b54682ef167c20789e7, type: 3}
+--- !u!4 &926417533 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6320040181030696419, guid: 663796d1f1a18b54682ef167c20789e7, type: 3}
+  m_PrefabInstance: {fileID: 926417532}
+  m_PrefabAsset: {fileID: 0}
 --- !u!212 &1212012074 stripped
 SpriteRenderer:
   m_CorrespondingSourceObject: {fileID: 5628018140324151390, guid: ef67ba864d1ecc042b5f4cf48455c0a6, type: 3}
@@ -1340,6 +1344,38 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1609561510}
   m_CullTransparentMesh: 1
+--- !u!1 &1612329784
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1612329785}
+  m_Layer: 0
+  m_Name: BridgeParent
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1612329785
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1612329784}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.01, y: -2.54, z: 0.12799788}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 926417533}
+  m_Father: {fileID: 0}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1727458804
 GameObject:
   m_ObjectHideFlags: 0
