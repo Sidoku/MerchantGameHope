@@ -9,6 +9,9 @@ namespace Cainos.PixelArtTopDown_Basic
     {
         public float moveSpeed;
         [SerializeField] private float sprintSpeed;
+        [SerializeField][Range(0, 1)] private float currentStamina;
+        [SerializeField][Range(0, 0.2f)] private float sprintStaminaLoss;
+        [SerializeField] private float staminaRegen;
 
         [SerializeField] private Rigidbody2D rb;
 
@@ -31,6 +34,7 @@ namespace Cainos.PixelArtTopDown_Basic
 
         private void Start()
         {
+            currentStamina = 1;
             moveState = MoveState.Walking;
             animator = GetComponent<Animator>();
          //   playerCollision = GetComponentInChildren<Collider2D>();
@@ -75,14 +79,17 @@ namespace Cainos.PixelArtTopDown_Basic
             dir.Normalize();
             animator.SetBool("IsMoving", dir.magnitude > 0);
 
-            if (moveState == MoveState.Sprinting)
+            if (moveState == MoveState.Sprinting && currentStamina > 0)
             {
+                currentStamina -= sprintStaminaLoss * Time.deltaTime;
                 rb.velocity = sprintSpeed * dir;
             }
             else
             {
+                currentStamina += staminaRegen * Time.deltaTime;
                 rb.velocity = moveSpeed * dir;
             }
+            currentStamina = Mathf.Clamp(currentStamina, 0, 1);
         }
 
        /* public void Jump(float jumpHeightScale, float jumpPushScale)
