@@ -10,23 +10,23 @@ namespace Cainos.PixelArtTopDown_Basic
 
         private Animator animator;
 
-        public SpriteRenderer playerSpriteRenderer;
-        public SpriteRenderer playerShadowRenderer;
+       // public SpriteRenderer playerSpriteRenderer;
+       // public SpriteRenderer playerShadowRenderer;
 
-        public Collider2D playerCollision;
+       // public Collider2D playerCollision;
 
-        public Rigidbody2D playerRigidBody2D;
+       // public Rigidbody2D playerRigidBody2D;
 
         private void Start()
         {
             animator = GetComponent<Animator>();
-            playerCollision = GetComponentInChildren<Collider2D>();
+         //   playerCollision = GetComponentInChildren<Collider2D>();
         }
 
-        [Header("Jumping")]
-        public AnimationCurve jumpCurve;
+       // [Header("Jumping")]
+       // public AnimationCurve jumpCurve;
 
-        bool isJumping = false;
+       // bool isJumping = false;
 
 
         private void Update()
@@ -53,10 +53,10 @@ namespace Cainos.PixelArtTopDown_Basic
                 dir.y = -1;
                 animator.SetInteger("Direction", 0);
             }
-            if(Input.GetKey(KeyCode.Space))
+            /*if(Input.GetKey(KeyCode.Space))
             {
                 Jump(1.0f, 0.0f);
-            }
+            }*/
 
             dir.Normalize();
             animator.SetBool("IsMoving", dir.magnitude > 0);
@@ -64,7 +64,7 @@ namespace Cainos.PixelArtTopDown_Basic
             GetComponent<Rigidbody2D>().velocity = speed * dir;
         }
 
-        public void Jump(float jumpHeightScale, float jumpPushScale)
+       /* public void Jump(float jumpHeightScale, float jumpPushScale)
         {
             if(!isJumping)
             {
@@ -128,6 +128,6 @@ namespace Cainos.PixelArtTopDown_Basic
                 JumpData jumpData = collision.GetComponent<JumpData>();
                 Jump(jumpData.jumpHeightScale, jumpData.jumpPushScale);
             }
-        }
+        }*/
     }
 }
