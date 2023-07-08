@@ -1,12 +1,24 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Cainos.PixelArtTopDown_Basic
 {
     public class TopDownCharacterController : MonoBehaviour
     {
-        public float speed;
+        public float moveSpeed;
+        [SerializeField] private float sprintSpeed;
+
+        [SerializeField] private Rigidbody2D rb;
+
+        private enum MoveState
+        {
+            Walking,
+            Sprinting
+        }
+
+        [SerializeField] private MoveState moveState;
 
         private Animator animator;
 
@@ -19,6 +31,7 @@ namespace Cainos.PixelArtTopDown_Basic
 
         private void Start()
         {
+            moveState = MoveState.Walking;
             animator = GetComponent<Animator>();
          //   playerCollision = GetComponentInChildren<Collider2D>();
         }
@@ -31,6 +44,7 @@ namespace Cainos.PixelArtTopDown_Basic
 
         private void Update()
         {
+            moveState = Input.GetKey(KeyCode.LeftShift) ? MoveState.Sprinting : MoveState.Walking;
             Vector2 dir = Vector2.zero;
             if (Input.GetKey(KeyCode.A))
             {
@@ -61,7 +75,14 @@ namespace Cainos.PixelArtTopDown_Basic
             dir.Normalize();
             animator.SetBool("IsMoving", dir.magnitude > 0);
 
-            GetComponent<Rigidbody2D>().velocity = speed * dir;
+            if (moveState == MoveState.Sprinting)
+            {
+                rb.velocity = sprintSpeed * dir;
+            }
+            else
+            {
+                rb.velocity = moveSpeed * dir;
+            }
         }
 
        /* public void Jump(float jumpHeightScale, float jumpPushScale)

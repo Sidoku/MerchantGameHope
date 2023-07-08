@@ -908,10 +908,10 @@ TextureImporter:
     secondaryTextures: []
     nameFileIdTable:
       character_Mode@4x_33: 610130822
-      character_Mode@4x_32: -419512392
       character_Mode@4x_20: -649520622
       character_Mode@4x_11: -1852406153
       character_Mode@4x_17: -1678655374
+      character_Mode@4x_14: 882149221
       character_Mode@4x_1: 389461309
       character_Mode@4x_35: 1124223751
       character_Mode@4x_0: -1233799299
@@ -940,9 +940,9 @@ TextureImporter:
       character_Mode@4x_13: 584829815
       character_Mode@4x_4: -879588139
       character_Mode@4x_23: -1649251085
-      character_Mode@4x_9: 1424317809
       character_Mode@4x_10: 410755434
-      character_Mode@4x_14: 882149221
+      character_Mode@4x_9: 1424317809
+      character_Mode@4x_32: -419512392
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
