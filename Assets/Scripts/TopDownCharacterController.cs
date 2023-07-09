@@ -43,7 +43,8 @@ namespace Cainos.PixelArtTopDown_Basic
         {
             Recovering,
             Walking,
-            Sprinting
+            Sprinting,
+            Falling
         }
 
         [SerializeField] private MoveState moveState;
@@ -90,7 +91,7 @@ namespace Cainos.PixelArtTopDown_Basic
 
         private void Update()
         {
-            if(moveState != MoveState.Recovering)
+            if(moveState != MoveState.Recovering && moveState != MoveState.Falling)
             {
                 moveState = Input.GetKey(KeyCode.LeftShift) ? MoveState.Sprinting : MoveState.Walking;
                 dir = Vector2.zero;
@@ -208,6 +209,16 @@ namespace Cainos.PixelArtTopDown_Basic
             else if (balanceValue > 0)
             {
                 balanceRightFill.fillAmount = Mathf.Abs(balanceValue);
+            }
+
+            if(balanceValue >= 0.9f || balanceValue <= -0.9f)
+            {
+                moveState = MoveState.Falling;
+                balanceValue = 0.0f;
+            }
+            else
+            {
+                moveState = MoveState.Walking;
             }
 
             period += Time.deltaTime;
