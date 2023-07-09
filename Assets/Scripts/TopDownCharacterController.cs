@@ -22,7 +22,8 @@ namespace Cainos.PixelArtTopDown_Basic
 
         private Inventory _inventory;
 
-        public float period;
+        public float maxInventoryWeight;
+        private float period;
 
         [SerializeField] private Sprite[] sprites;
         [SerializeField] private SpriteRenderer playerSprite;
@@ -123,16 +124,16 @@ namespace Cainos.PixelArtTopDown_Basic
                     // animator.Play(moveState == MoveState.Walking ? "Walk S" : "Run S");
                 }
                 
-                if(Input.GetKey(KeyCode.J))
+                if(Input.GetKeyDown(KeyCode.J))
                 {
-                    if(balanceValue >= 0.2f)
+                    if(balanceValue >= -1.0f)
                     {
                         balanceValue -= 0.2f;
                     }                  
                 }
-                if (Input.GetKey(KeyCode.K))
+                if (Input.GetKeyDown(KeyCode.K))
                 {
-                    if(balanceValue <=0.8f)
+                    if(balanceValue <=1f)
                     {
                         balanceValue += 0.2f;
                     }
@@ -143,7 +144,7 @@ namespace Cainos.PixelArtTopDown_Basic
                 }*/
 
                 dir.Normalize();
-                animator.SetBool("IsMoving", dir.magnitude > 0);
+                //animator.SetBool("IsMoving", dir.magnitude > 0);
 
                 if (moveState == MoveState.Sprinting && currentStamina > 0 && dir != Vector2.zero)
                 {
@@ -176,10 +177,10 @@ namespace Cainos.PixelArtTopDown_Basic
 
             Animations();
 
-            if(period > 10f)
+            if(period > 5f)
             {
                 inventoryWeight = _inventory.GetTotalItemCount();
-                if (inventoryWeight >= 0)
+                if (inventoryWeight >= maxInventoryWeight)
                 {
                     if (!balanceSideSwitch)
                     {
@@ -192,23 +193,23 @@ namespace Cainos.PixelArtTopDown_Basic
                 }
                 Mathf.Clamp(balanceValue, -1, 1);
 
-                if(balanceValue == 0)
-                {
-                    balanceSideSwitch = !balanceSideSwitch;
-                }
-
-                if (balanceValue < 0)
-                {
-                    balanceLeftFill.fillAmount = Mathf.Abs(balanceValue);
-                }
-                else if( balanceValue > 0)
-                {
-                    balanceRightFill.fillAmount = Mathf.Abs(balanceValue);
-                }
-                
-
                 period = 0;
             }
+
+            if (balanceValue == 0)
+            {
+                balanceSideSwitch = !balanceSideSwitch;
+            }
+
+            if (balanceValue < 0)
+            {
+                balanceLeftFill.fillAmount = Mathf.Abs(balanceValue);
+            }
+            else if (balanceValue > 0)
+            {
+                balanceRightFill.fillAmount = Mathf.Abs(balanceValue);
+            }
+
             period += Time.deltaTime;
         }
 

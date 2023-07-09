@@ -13,9 +13,17 @@ public class SceneLoader : MonoBehaviour
         {
             SceneManager.LoadScene(sceneName);
         }
-        else if(sceneNumber != null)
+        else
         {
             SceneManager.LoadScene(sceneNumber);
+        }
+    }
+
+    public void LoadFail(string scene)
+    {
+        if(scene != null)
+        {
+            SceneManager.LoadScene(scene);
         }
     }
 }
