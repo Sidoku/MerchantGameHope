@@ -9,13 +9,14 @@ public class Inventory : MonoBehaviour
     public int item1;
     public int item2;
     public int item3;
+    private int totalItemCount;
     public TMP_Text item1text;
     public TMP_Text item2text;
     public TMP_Text item3text;
     // Start is called before the first frame update
     void Start()
     {
-        
+        totalItemCount = 0;
     }
 
     // Update is called once per frame
@@ -24,6 +25,7 @@ public class Inventory : MonoBehaviour
         item1text.text = "item1 " + item1;
         item2text.text = "item2 " + item2;
         item3text.text = "item3 " + item3;
+        totalItemCount = item1 + item2 + item3;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -43,6 +45,11 @@ public class Inventory : MonoBehaviour
             item3++;
             Destroy(collision.gameObject);
         }
+    }
+
+    public int GetTotalItemCount()
+    {
+        return totalItemCount;
     }
 
 }
