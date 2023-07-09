@@ -7,11 +7,11 @@ using UnityEngine.UI;
 public class Inventory : MonoBehaviour
 {
 
-    public int item1 = 0;
-    public int item2 = 0;
-    public int item3 = 0;
-    public int item4 = 0;
-    public int item5 = 0;
+    public int item1 = 0; // score is 2 (Clover)
+    public int item2 = 0; // score is 4 (Medicine)
+    public int item3 = 0; // score is 6 (Monster EGG)
+    public int item4 = 0; // score is 3 (OrangeMush)
+    public int item5 = 0; // score is 5 (PurpleFlower)
     private int totalItemCount;
     public TMP_Text item1text;
     public TMP_Text item2text;
@@ -29,7 +29,7 @@ public class Inventory : MonoBehaviour
     public Sprite monsteregg;
     public Sprite orangeMush;
     public Sprite purpleFlower;
-
+    public TMP_Text scoreText;
     public enum slots {slot1,slot2,slot3};
     slots currentslot = slots.slot1;
 
@@ -109,7 +109,11 @@ public class Inventory : MonoBehaviour
             item3text.fontStyle = FontStyles.Normal;
         }
 
-
+        if(Input.GetKeyDown(KeyCode.E))
+        {
+           
+           scoreText.text = "score " + FinalScore();
+        }
 
     }
 
@@ -343,6 +347,11 @@ public class Inventory : MonoBehaviour
 
     }
 
+    public float FinalScore()
+    {
+        float score = (item1 * 2) + (item2 * 4) + (item3 * 6) + (item4 * 3) + (item5 * 5);
+        return score;
+    }
 
 
 }
