@@ -120,8 +120,8 @@ public class Inventory : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
        
-
-        AddItemtoCurrentSlot(collision.gameObject);
+        if(collision.gameObject.tag == "item1" || collision.gameObject.tag == "item2" || collision.gameObject.tag == "item3" || collision.gameObject.tag == "item4" || collision.gameObject.tag == "item5")
+            AddItemtoCurrentSlot(collision.gameObject);
 
     }
 
