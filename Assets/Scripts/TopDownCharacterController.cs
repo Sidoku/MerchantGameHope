@@ -14,7 +14,8 @@ namespace Cainos.PixelArtTopDown_Basic
         [SerializeField] private float staminaRegen;
         [SerializeField] private GameObject staminaBar;
         [SerializeField] private SpriteRenderer staminaFill;
-        [SerializeField] private SpriteRenderer balanceFill;
+        [SerializeField] private SpriteRenderer balanceRightFill;
+        [SerializeField] private SpriteRenderer balanceLeftFill;
         [SerializeField] private float maxStaminaWidth;
         [SerializeField] private float maxBalanceWidth;
 
@@ -30,6 +31,10 @@ namespace Cainos.PixelArtTopDown_Basic
 
         private float balanceValue;
         private int inventoryWeight;
+
+        // Right = False
+        // Left = True
+        bool balanceSideSwitch = false;
 
 
         private enum MoveState
@@ -53,7 +58,7 @@ namespace Cainos.PixelArtTopDown_Basic
         private void Start()
         {
             maxStaminaWidth = staminaFill.size.x;
-            maxBalanceWidth = balanceFill.size.x;
+            maxBalanceWidth = balanceRightFill.size.x;
 
             currentStamina = 1;
             moveState = MoveState.Walking;
@@ -113,18 +118,18 @@ namespace Cainos.PixelArtTopDown_Basic
                     playerSprite.sprite = sprites[1];
                     // animator.Play(moveState == MoveState.Walking ? "Walk S" : "Run S");
                 }
-                if(Input.GetKey(KeyCode.K))
+                if(Input.GetKey(KeyCode.J))
                 {
                     if(balanceValue >= 0.2f)
                     {
                         balanceValue -= 0.2f;
                     }                  
                 }
-                if (Input.GetKey(KeyCode.L))
+                if (Input.GetKey(KeyCode.K))
                 {
                     if(balanceValue <=0.8f)
                     {
-                        balanceValue -= 0.2f;
+                        balanceValue += 0.2f;
                     }
                 }
                 /*if(Input.GetKey(KeyCode.Space))
@@ -169,10 +174,31 @@ namespace Cainos.PixelArtTopDown_Basic
                 inventoryWeight = inventory.GetTotalItemCount();
                 if (inventoryWeight >= 5)
                 {
-                    balanceValue += 0.2f;
+                    if (!balanceSideSwitch)
+                    {
+                        balanceValue += 0.2f;
+                    }   
+                    else if (balanceSideSwitch)
+                    {
+                        balanceValue -= 0.2f;
+                    }                      
                 }
-                Mathf.Clamp(balanceValue, 0, 1);
-                balanceFill.size = new Vector2(balanceValue * maxBalanceWidth, balanceFill.size.y);
+                Mathf.Clamp(balanceValue, -1, 1);
+
+                if(balanceValue == 0)
+                {
+                    balanceSideSwitch = !balanceSideSwitch;
+                }
+
+                if (balanceValue < 0)
+                {
+                    balanceLeftFill.size = new Vector2(balanceValue * maxBalanceWidth, balanceLeftFill.size.y);
+                }
+                else if( balanceValue > 0)
+                {
+                    balanceRightFill.size = new Vector2(balanceValue * maxBalanceWidth, balanceLeftFill.size.y);
+                }
+                
 
                 period = 0;
             }
