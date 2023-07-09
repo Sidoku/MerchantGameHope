@@ -6,9 +6,9 @@ using UnityEngine;
 
 public class EndTrigger : MonoBehaviour
 {
-    private Inventory _inventory;
+    [SerializeField] Inventory _inventory;
     private float finalScore;
-    private SceneLoader _sceneLoader;
+    [SerializeField] SceneLoader _sceneLoader;
     private void OnTriggerEnter2D(Collider2D col)
     {
         finalScore = _inventory.FinalScore();
