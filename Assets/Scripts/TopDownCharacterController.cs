@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
+using UnityEngine.UI;
 
 namespace Cainos.PixelArtTopDown_Basic
 {
@@ -14,12 +15,12 @@ namespace Cainos.PixelArtTopDown_Basic
         [SerializeField] private float staminaRegen;
         [SerializeField] private GameObject staminaBar;
         [SerializeField] private SpriteRenderer staminaFill;
-        [SerializeField] private SpriteRenderer balanceRightFill;
-        [SerializeField] private SpriteRenderer balanceLeftFill;
+        [SerializeField] private Image balanceRightFill;
+        [SerializeField] private Image balanceLeftFill;
         [SerializeField] private float maxStaminaWidth;
         [SerializeField] private float maxBalanceWidth;
 
-        Inventory inventory;
+        private Inventory _inventory;
 
         public float period;
 
@@ -58,7 +59,7 @@ namespace Cainos.PixelArtTopDown_Basic
         private void Start()
         {
             maxStaminaWidth = staminaFill.size.x;
-            maxBalanceWidth = balanceRightFill.size.x;
+            // maxBalanceWidth = balanceRightFill.size.x;
 
             currentStamina = 1;
             moveState = MoveState.Walking;
@@ -74,7 +75,10 @@ namespace Cainos.PixelArtTopDown_Basic
             // The time period between losing balance again
             period = 0.0f;
 
-            StartCoroutine("CheckBalance");
+            //Getting the inventory reference
+            _inventory = GetComponent<Inventory>();
+
+            // StartCoroutine("CheckBalance");
         }
 
        // [Header("Jumping")]
@@ -171,8 +175,8 @@ namespace Cainos.PixelArtTopDown_Basic
 
             if(period > 10f)
             {
-                inventoryWeight = inventory.GetTotalItemCount();
-                if (inventoryWeight >= 5)
+                inventoryWeight = _inventory.GetTotalItemCount();
+                if (inventoryWeight >= 0)
                 {
                     if (!balanceSideSwitch)
                     {
@@ -192,11 +196,11 @@ namespace Cainos.PixelArtTopDown_Basic
 
                 if (balanceValue < 0)
                 {
-                    balanceLeftFill.size = new Vector2(balanceValue * maxBalanceWidth, balanceLeftFill.size.y);
+                    balanceLeftFill.fillAmount = Mathf.Abs(balanceValue);
                 }
                 else if( balanceValue > 0)
                 {
-                    balanceRightFill.size = new Vector2(balanceValue * maxBalanceWidth, balanceLeftFill.size.y);
+                    balanceRightFill.fillAmount = Mathf.Abs(balanceValue);
                 }
                 
 
