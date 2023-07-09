@@ -227,7 +227,11 @@ MonoBehaviour:
   staminaRegen: 0.1
   staminaBar: {fileID: 1387487077}
   staminaFill: {fileID: 260832684}
-  maxWidth: 0
+  balanceRightFill: {fileID: 0}
+  balanceLeftFill: {fileID: 0}
+  maxStaminaWidth: 1.5
+  maxBalanceWidth: 0
+  period: 0
   sprites:
   - {fileID: -496848846, guid: 3a14cfff127bf644e89a5f5a65641109, type: 3}
   - {fileID: -1993740109, guid: 3a14cfff127bf644e89a5f5a65641109, type: 3}
@@ -345,7 +349,7 @@ Animator:
   m_GameObject: {fileID: 5628018141983903104}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: eb1ae3e395b532e4d8dbc08a412e4a7d, type: 2}
+  m_Controller: {fileID: 9100000, guid: 48b0bde3131a18b4c9d35cbd4f01aaf8, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
