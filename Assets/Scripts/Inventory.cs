@@ -109,11 +109,11 @@ public class Inventory : MonoBehaviour
             item3text.fontStyle = FontStyles.Normal;
         }
 
-        if(Input.GetKeyDown(KeyCode.E))
-        {
-           
-           scoreText.text = "score " + FinalScore();
-        }
+        // if(Input.GetKeyDown(KeyCode.E))
+        // {
+        //    
+        //    scoreText.text = "score " + FinalScore();
+        // }
 
     }
 
