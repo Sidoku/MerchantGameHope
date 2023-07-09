@@ -96,14 +96,14 @@ namespace Cainos.PixelArtTopDown_Basic
                 if (Input.GetKey(KeyCode.A))
                 {
                     dir.x = -1;
-                    animator.SetInteger("Direction", 3);
+                    // animator.SetInteger("Direction", 3);
                     playerSprite.sprite = sprites[2];
                     // animator.Play(moveState == MoveState.Walking ? "Walk A" : "Run A");
                 }
                 else if (Input.GetKey(KeyCode.D))
                 {
                     dir.x = 1;
-                    animator.SetInteger("Direction", 2);
+                    // animator.SetInteger("Direction", 2);
                     playerSprite.sprite = sprites[3];
                     // animator.Play(moveState == MoveState.Walking ? "Walk D" : "Run D");
                 }
@@ -111,17 +111,18 @@ namespace Cainos.PixelArtTopDown_Basic
                 if (Input.GetKey(KeyCode.W))
                 {
                     dir.y = 1;
-                    animator.SetInteger("Direction", 1);
+                    // animator.SetInteger("Direction", 1);
                     playerSprite.sprite = sprites[0];
                     // animator.Play(moveState == MoveState.Walking ? "Walk W" : "Run W");
                 }
                 else if (Input.GetKey(KeyCode.S))
                 {
                     dir.y = -1;
-                    animator.SetInteger("Direction", 0);
+                    // animator.SetInteger("Direction", 0);
                     playerSprite.sprite = sprites[1];
                     // animator.Play(moveState == MoveState.Walking ? "Walk S" : "Run S");
                 }
+                
                 if(Input.GetKey(KeyCode.J))
                 {
                     if(balanceValue >= 0.2f)
@@ -173,6 +174,8 @@ namespace Cainos.PixelArtTopDown_Basic
                 moveState = MoveState.Recovering;
             }
 
+            Animations();
+
             if(period > 10f)
             {
                 inventoryWeight = _inventory.GetTotalItemCount();
@@ -209,6 +212,34 @@ namespace Cainos.PixelArtTopDown_Basic
             period += Time.deltaTime;
         }
 
+        private void Animations()
+        {
+            if (moveState == MoveState.Recovering)
+            {
+                animator.Play("Breath");
+            }
+            else if (Input.GetKey(KeyCode.A))
+            {
+                animator.Play(moveState == MoveState.Walking ? "Walk Left" : "Run Left");
+            }
+            else if (Input.GetKey(KeyCode.D))
+            {
+                animator.Play(moveState == MoveState.Walking ? "Walk Right" : "Run Right");
+            }
+            else if (Input.GetKey(KeyCode.W))
+            {
+                animator.Play(moveState == MoveState.Walking ? "Walk Up" : "Run Up");
+            }
+            else if (Input.GetKey(KeyCode.S))
+            {
+                animator.Play(moveState == MoveState.Walking ? "Walk Down" : "Run Down");
+            }
+            else
+            {
+                animator.Play("Front Idle");
+            }
+        }
+        
         /* public void Jump(float jumpHeightScale, float jumpPushScale)
          {
              if(!isJumping)
