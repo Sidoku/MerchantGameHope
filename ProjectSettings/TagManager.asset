@@ -74,6 +74,9 @@ TagManager:
   - name: Player
     uniqueID: 52278605
     locked: 0
+  - name: Gates
+    uniqueID: 4057666193
+    locked: 0
   - name: UI
     uniqueID: 2050423999
     locked: 0
