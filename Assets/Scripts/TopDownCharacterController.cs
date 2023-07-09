@@ -14,13 +14,28 @@ namespace Cainos.PixelArtTopDown_Basic
         [SerializeField] private float staminaRegen;
         [SerializeField] private GameObject staminaBar;
         [SerializeField] private SpriteRenderer staminaFill;
-        [SerializeField] private float maxWidth;
+        [SerializeField] private SpriteRenderer balanceRightFill;
+        [SerializeField] private SpriteRenderer balanceLeftFill;
+        [SerializeField] private float maxStaminaWidth;
+        [SerializeField] private float maxBalanceWidth;
+
+        Inventory inventory;
+
+        public float period;
 
         [SerializeField] private Sprite[] sprites;
         [SerializeField] private SpriteRenderer playerSprite;
         
         [SerializeField] private Rigidbody2D rb;
         private Vector2 dir;
+
+        private float balanceValue;
+        private int inventoryWeight;
+
+        // Right = False
+        // Left = True
+        bool balanceSideSwitch = false;
+
 
         private enum MoveState
         {
@@ -42,11 +57,24 @@ namespace Cainos.PixelArtTopDown_Basic
 
         private void Start()
         {
-            maxWidth = staminaFill.size.x;
+            maxStaminaWidth = staminaFill.size.x;
+            maxBalanceWidth = balanceRightFill.size.x;
+
             currentStamina = 1;
             moveState = MoveState.Walking;
             animator = GetComponent<Animator>();
-         //   playerCollision = GetComponentInChildren<Collider2D>();
+            //   playerCollision = GetComponentInChildren<Collider2D>();
+
+            // The value for amount the meter should be filled to
+            balanceValue = 0;
+
+            // The weight of the total inventory
+            inventoryWeight = 0;
+
+            // The time period between losing balance again
+            period = 0.0f;
+
+            StartCoroutine("CheckBalance");
         }
 
        // [Header("Jumping")]
@@ -90,6 +118,20 @@ namespace Cainos.PixelArtTopDown_Basic
                     playerSprite.sprite = sprites[1];
                     // animator.Play(moveState == MoveState.Walking ? "Walk S" : "Run S");
                 }
+                if(Input.GetKey(KeyCode.J))
+                {
+                    if(balanceValue >= 0.2f)
+                    {
+                        balanceValue -= 0.2f;
+                    }                  
+                }
+                if (Input.GetKey(KeyCode.K))
+                {
+                    if(balanceValue <=0.8f)
+                    {
+                        balanceValue += 0.2f;
+                    }
+                }
                 /*if(Input.GetKey(KeyCode.Space))
                 {
                     Jump(1.0f, 0.0f);
@@ -97,6 +139,7 @@ namespace Cainos.PixelArtTopDown_Basic
 
                 dir.Normalize();
                 animator.SetBool("IsMoving", dir.magnitude > 0);
+
                 if (moveState == MoveState.Sprinting && currentStamina > 0 && dir != Vector2.zero)
                 {
                     currentStamina -= sprintStaminaLoss * Time.deltaTime;
@@ -119,78 +162,115 @@ namespace Cainos.PixelArtTopDown_Basic
             
             currentStamina = Mathf.Clamp(currentStamina, 0, 1);
             staminaBar.SetActive(!(currentStamina >= 1));
-            staminaFill.size = new Vector2(currentStamina * maxWidth, staminaFill.size.y);
+            staminaFill.size = new Vector2(currentStamina * maxStaminaWidth, staminaFill.size.y);
             if (currentStamina <= 0)
             {
                 rb.velocity = Vector2.zero;
                 moveState = MoveState.Recovering;
             }
+
+            if(period > 10f)
+            {
+                inventoryWeight = inventory.GetTotalItemCount();
+                if (inventoryWeight >= 5)
+                {
+                    if (!balanceSideSwitch)
+                    {
+                        balanceValue += 0.2f;
+                    }   
+                    else if (balanceSideSwitch)
+                    {
+                        balanceValue -= 0.2f;
+                    }                      
+                }
+                Mathf.Clamp(balanceValue, -1, 1);
+
+                if(balanceValue == 0)
+                {
+                    balanceSideSwitch = !balanceSideSwitch;
+                }
+
+                if (balanceValue < 0)
+                {
+                    balanceLeftFill.size = new Vector2(balanceValue * maxBalanceWidth, balanceLeftFill.size.y);
+                }
+                else if( balanceValue > 0)
+                {
+                    balanceRightFill.size = new Vector2(balanceValue * maxBalanceWidth, balanceLeftFill.size.y);
+                }
+                
+
+                period = 0;
+            }
+            period += Time.deltaTime;
         }
 
-       /* public void Jump(float jumpHeightScale, float jumpPushScale)
-        {
-            if(!isJumping)
-            {
-                StartCoroutine(JumpCo(jumpHeightScale, jumpPushScale));
-            }
-        }
+        /* public void Jump(float jumpHeightScale, float jumpPushScale)
+         {
+             if(!isJumping)
+             {
+                 StartCoroutine(JumpCo(jumpHeightScale, jumpPushScale));
+             }
+         }
 
-        private IEnumerator JumpCo(float jumpHeightScale, float jumpPushScale)
-        {
-            isJumping = true;
+         private IEnumerator JumpCo(float jumpHeightScale, float jumpPushScale)
+         {
+             isJumping = true;
 
-            float jumpStartTime = Time.time;
-            float jumpDuration = 1.0f;                         //playerRigidBody2D.velocity.magnitude * 0.25f;
+             float jumpStartTime = Time.time;
+             float jumpDuration = 1.0f;                         //playerRigidBody2D.velocity.magnitude * 0.25f;
 
-            jumpHeightScale = jumpHeightScale * playerRigidBody2D.velocity.magnitude * 0.5f;
-            jumpHeightScale = Mathf.Clamp(jumpHeightScale, 0.0f, 1.0f);
+             jumpHeightScale = jumpHeightScale * playerRigidBody2D.velocity.magnitude * 0.5f;
+             jumpHeightScale = Mathf.Clamp(jumpHeightScale, 0.0f, 1.0f);
 
-            //Disable collisions
-            playerCollision.enabled = false;
+             //Disable collisions
+             playerCollision.enabled = false;
 
-            while (isJumping) 
-            {
-                //Percentage 0 - 1.0 of where we are in the jump process
-                float jumpCompletedPercentage = (Time.time - jumpStartTime) / jumpDuration;
-                jumpCompletedPercentage = Mathf.Clamp01(jumpCompletedPercentage);
+             while (isJumping) 
+             {
+                 //Percentage 0 - 1.0 of where we are in the jump process
+                 float jumpCompletedPercentage = (Time.time - jumpStartTime) / jumpDuration;
+                 jumpCompletedPercentage = Mathf.Clamp01(jumpCompletedPercentage);
 
-                //Increase the scale of the sprite
-                playerSpriteRenderer.transform.localScale = Vector3.one + Vector3.one * jumpCurve.Evaluate(jumpCompletedPercentage) * jumpHeightScale;
+                 //Increase the scale of the sprite
+                 playerSpriteRenderer.transform.localScale = Vector3.one + Vector3.one * jumpCurve.Evaluate(jumpCompletedPercentage) * jumpHeightScale;
 
-                //Increase the scale of the shadow
-                playerShadowRenderer.transform.localScale = playerSpriteRenderer.transform.localScale * 0.75f;
+                 //Increase the scale of the shadow
+                 playerShadowRenderer.transform.localScale = playerSpriteRenderer.transform.localScale * 0.75f;
 
-                //Offset shadow position
+                 //Offset shadow position
 
-                playerShadowRenderer.transform.localPosition = new Vector3(1, -1, 0.0f) * 3 * jumpCurve.Evaluate(jumpCompletedPercentage)* jumpHeightScale;
+                 playerShadowRenderer.transform.localPosition = new Vector3(1, -1, 0.0f) * 3 * jumpCurve.Evaluate(jumpCompletedPercentage)* jumpHeightScale;
 
-                if (jumpCompletedPercentage == 1.0f)
-                    break;
+                 if (jumpCompletedPercentage == 1.0f)
+                     break;
 
-                yield return null;
-            }
+                 yield return null;
+             }
 
-            playerSpriteRenderer.transform.localScale = Vector3.one;
+             playerSpriteRenderer.transform.localScale = Vector3.one;
 
-            //Reset the shadows position and scale
-            playerShadowRenderer.transform.localPosition = Vector3.zero;
-            playerShadowRenderer.transform.localScale = playerSpriteRenderer.transform.localScale;
+             //Reset the shadows position and scale
+             playerShadowRenderer.transform.localPosition = Vector3.zero;
+             playerShadowRenderer.transform.localScale = playerSpriteRenderer.transform.localScale;
 
-            //Enable the collider after landing
-            playerCollision.enabled = true;
+             //Enable the collider after landing
+             playerCollision.enabled = true;
 
-            //Change jump state
-            isJumping= false;
-        }
+             //Change jump state
+             isJumping= false;
+         }
 
-        private void OnTriggerEnter2D(Collider2D collision)
-        {
-            if(collision.CompareTag("Jump"))
-            {
-                //Get the jump data
-                JumpData jumpData = collision.GetComponent<JumpData>();
-                Jump(jumpData.jumpHeightScale, jumpData.jumpPushScale);
-            }
-        }*/
+         private void OnTriggerEnter2D(Collider2D collision)
+         {
+             if(collision.CompareTag("Jump"))
+             {
+                 //Get the jump data
+                 JumpData jumpData = collision.GetComponent<JumpData>();
+                 Jump(jumpData.jumpHeightScale, jumpData.jumpPushScale);
+             }
+         }*/
     }
+
+
 }
