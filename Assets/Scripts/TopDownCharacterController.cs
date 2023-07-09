@@ -16,6 +16,9 @@ namespace Cainos.PixelArtTopDown_Basic
         [SerializeField] private SpriteRenderer staminaFill;
         [SerializeField] private float maxWidth;
 
+        [SerializeField] private Sprite[] sprites;
+        [SerializeField] private SpriteRenderer playerSprite;
+        
         [SerializeField] private Rigidbody2D rb;
         private Vector2 dir;
 
@@ -62,22 +65,30 @@ namespace Cainos.PixelArtTopDown_Basic
                 {
                     dir.x = -1;
                     animator.SetInteger("Direction", 3);
+                    playerSprite.sprite = sprites[2];
+                    // animator.Play(moveState == MoveState.Walking ? "Walk A" : "Run A");
                 }
                 else if (Input.GetKey(KeyCode.D))
                 {
                     dir.x = 1;
                     animator.SetInteger("Direction", 2);
+                    playerSprite.sprite = sprites[3];
+                    // animator.Play(moveState == MoveState.Walking ? "Walk D" : "Run D");
                 }
 
                 if (Input.GetKey(KeyCode.W))
                 {
                     dir.y = 1;
                     animator.SetInteger("Direction", 1);
+                    playerSprite.sprite = sprites[0];
+                    // animator.Play(moveState == MoveState.Walking ? "Walk W" : "Run W");
                 }
                 else if (Input.GetKey(KeyCode.S))
                 {
                     dir.y = -1;
                     animator.SetInteger("Direction", 0);
+                    playerSprite.sprite = sprites[1];
+                    // animator.Play(moveState == MoveState.Walking ? "Walk S" : "Run S");
                 }
                 /*if(Input.GetKey(KeyCode.Space))
                 {
