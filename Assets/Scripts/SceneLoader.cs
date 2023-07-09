@@ -58,13 +58,13 @@ public class SceneLoader : MonoBehaviour
 
     public void ChoiceLoader()
     {
-        if (StaticVariables.score >= 1)
+        if (StaticVariables.score >= 7)
         {
-            SceneManager.LoadScene(sceneChoice2);
+            SceneManager.LoadScene(sceneChoice1);
         }
         else if (StaticVariables.score >= 0)
         {
-            SceneManager.LoadScene(sceneChoice1);
+            SceneManager.LoadScene(sceneChoice2);
         }
     }
 }

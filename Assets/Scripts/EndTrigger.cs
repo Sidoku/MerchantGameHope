@@ -12,7 +12,9 @@ public class EndTrigger : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D col)
     {
         finalScore = _inventory.FinalScore();
+        Debug.Log("final score: " + finalScore);
         StaticVariables.score = finalScore;
+        Debug.Log("Final Score: " + StaticVariables.score);
         _sceneLoader.Load();
     }
 }
