@@ -4,5 +4,5 @@ using UnityEngine;
 
 public class StaticVariables : MonoBehaviour
 {
-    public static float score;
+    public static float score = 0;
 }

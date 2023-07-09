@@ -7,6 +7,8 @@ using UnityEngine.SceneManagement;
 public class SceneLoader : MonoBehaviour
 {
     [SerializeField] private string sceneName;
+    [SerializeField] private string sceneChoice1;
+    [SerializeField] private string sceneChoice2;
     [SerializeField] private int sceneNumber;
     [SerializeField] private bool durationBased;
     [SerializeField] private float sceneDuration;
@@ -51,6 +53,18 @@ public class SceneLoader : MonoBehaviour
         else
         {
             SceneManager.LoadScene(sceneNumber);
+        }
+    }
+
+    public void ChoiceLoader()
+    {
+        if (StaticVariables.score >= 1)
+        {
+            SceneManager.LoadScene(sceneChoice2);
+        }
+        else if (StaticVariables.score >= 0)
+        {
+            SceneManager.LoadScene(sceneChoice1);
         }
     }
 }

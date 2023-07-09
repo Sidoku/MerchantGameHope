@@ -21,6 +21,9 @@ EditorBuildSettings:
     path: Assets/Scenes/RanaScene.unity
     guid: df036e67f5a98504eb658a41735982cd
   - enabled: 1
+    path: Assets/Scenes/FinalScore.unity
+    guid: c7a947f1d567ac549924fb3416effd17
+  - enabled: 1
     path: Assets/Scenes/EndScene1.unity
     guid: 83564d3385ed72342b4a371b40eabdc1
   - enabled: 1
