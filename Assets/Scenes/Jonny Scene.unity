@@ -58007,7 +58007,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 525a8d5ef45f7dd49b4e2fb2ddbb68d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneName: RanaScene
+  sceneName: Start Screen 1
+  sceneChoice1: 
+  sceneChoice2: 
   sceneNumber: 1
   durationBased: 1
   sceneDuration: 52

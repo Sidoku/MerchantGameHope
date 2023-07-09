@@ -29,7 +29,7 @@ public class KnightCalculation : MonoBehaviour
 
         if (time >= timerDuration)
         {
-            sceneLoader.Load();
+            sceneLoader.LoadFail("EndScene1");
         }
     }
 }
