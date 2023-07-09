@@ -51,11 +51,17 @@ TagManager:
   - name: Platforms
     uniqueID: 1524367791
     locked: 0
+  - name: Water
+    uniqueID: 4048706443
+    locked: 0
   - name: Walls
     uniqueID: 579360273
     locked: 0
-  - name: Plants
+  - name: PlantsAndStones
     uniqueID: 1840831779
+    locked: 0
+  - name: Props
+    uniqueID: 891862091
     locked: 0
   - name: Interactables
     uniqueID: 3038740897
@@ -65,7 +71,4 @@ TagManager:
     locked: 0
   - name: Player
     uniqueID: 52278605
-    locked: 0
-  - name: UI
-    uniqueID: 1050938713
     locked: 0
