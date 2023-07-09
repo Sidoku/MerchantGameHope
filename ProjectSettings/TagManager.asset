@@ -8,6 +8,8 @@ TagManager:
   - item2
   - item3
   - Bridge
+  - item4
+  - item5
   layers:
   - Default
   - TransparentFX
@@ -74,4 +76,7 @@ TagManager:
     locked: 0
   - name: UI
     uniqueID: 2050423999
+    locked: 0
+  - name: Selected
+    uniqueID: 568111569
     locked: 0
