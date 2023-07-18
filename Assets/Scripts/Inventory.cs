@@ -30,14 +30,14 @@ public class Inventory : MonoBehaviour
     public Sprite orangeMush;
     public Sprite purpleFlower;
     public TMP_Text scoreText;
-    public enum slots {slot1,slot2,slot3};
-    slots currentslot = slots.slot1;
+    //public enum slots {slot1,slot2,slot3};
+    int currentslot = 0;
 
-    List<KeyValuePair<slots, string>> inventory = new List<KeyValuePair<slots, string>>()
+    List<KeyValuePair<int, string>> inventory = new List<KeyValuePair<int, string>>()
     {
-        new KeyValuePair<slots, string>(slots.slot1,"empty"),
-        new KeyValuePair<slots, string>(slots.slot2,"empty"),
-        new KeyValuePair<slots, string>(slots.slot3,"empty")
+        new KeyValuePair<int, string>(0,"empty"),
+        new KeyValuePair<int, string>(1,"empty"),
+        new KeyValuePair<int, string>(2,"empty")
     };
 
     // Start is called before the first frame update
@@ -60,22 +60,22 @@ public class Inventory : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            if(currentslot == slots.slot1)
+            if(currentslot == 0)
             {
-                currentslot = slots.slot2;
+                currentslot = 1;
 
-            }else if(currentslot== slots.slot2) {
+            }else if(currentslot== 1) {
                 
-                currentslot= slots.slot3;
+                currentslot= 2;
             }
             else
             {
-                currentslot = slots.slot1;
+                currentslot = 0;
             }
  
         }
 
-        if(currentslot == slots.slot1)
+        if(currentslot == 0)
         {
             item1text.fontStyle = FontStyles.Bold;
             slot1.gameObject.SetActive(true);
@@ -86,7 +86,7 @@ public class Inventory : MonoBehaviour
         {
             item1text.fontStyle = FontStyles.Normal;
         }
-        if (currentslot == slots.slot2)
+        if (currentslot == 1)
         {
             item2text.fontStyle = FontStyles.Bold;
             slot1.gameObject.SetActive(false);
@@ -97,7 +97,7 @@ public class Inventory : MonoBehaviour
         {
             item2text.fontStyle = FontStyles.Normal;
         }
-        if (currentslot == slots.slot3)
+        if (currentslot == 2)
         {
             item3text.fontStyle = FontStyles.Bold;
             slot1.gameObject.SetActive(false);
@@ -132,7 +132,26 @@ public class Inventory : MonoBehaviour
 
     public void AddItemtoCurrentSlot(GameObject item)
     {
-        if(currentslot == slots.slot1) {
+
+        for(int i =0; i<=2; i++)
+        {
+            
+            if(inventory[i].Value == "empty")
+            {
+               AddandDestoryvalue(item);
+               inventory.Insert(i, new KeyValuePair<int, string>(i, item.tag));
+               return;
+            }
+
+            if (inventory[i].Value == item.tag)
+            {
+                AddandDestoryvalue(item);
+               
+                return;
+            }
+        }
+
+        if(currentslot == 0) {
             if(inventory[0].Value == item.tag)
             {
                AddandDestoryvalue(item);
@@ -143,7 +162,7 @@ public class Inventory : MonoBehaviour
                 MakeZero(inventory[0].Value);
                 inventory.RemoveAt(0);
                 AddandDestoryvalue(item);
-                inventory.Insert(0, new KeyValuePair<slots, string>(slots.slot1, item.tag));
+                inventory.Insert(0, new KeyValuePair<int, string>(0, item.tag));
                 
                  
 
@@ -152,7 +171,7 @@ public class Inventory : MonoBehaviour
 
         }
 
-        if (currentslot == slots.slot2)
+        if (currentslot == 1)
         {
             if (inventory[1].Value == item.tag)
             {
@@ -163,13 +182,13 @@ public class Inventory : MonoBehaviour
                 MakeZero(inventory[1].Value);
                 inventory.RemoveAt(1);
                 AddandDestoryvalue(item);
-                inventory.Insert(1, new KeyValuePair<slots, string>(slots.slot2, item.tag));
+                inventory.Insert(1, new KeyValuePair<int, string>(1, item.tag));
             }
 
 
         }
 
-        if (currentslot == slots.slot3)
+        if (currentslot == 2)
         {
             if (inventory[2].Value == item.tag)
             {
@@ -180,7 +199,7 @@ public class Inventory : MonoBehaviour
                 MakeZero(inventory[2].Value);
                 inventory.RemoveAt(2);
                 AddandDestoryvalue(item);
-                inventory.Insert(2, new KeyValuePair<slots, string>(slots.slot3, item.tag));
+                inventory.Insert(2, new KeyValuePair<int, string>(2, item.tag));
                 
             }
 
