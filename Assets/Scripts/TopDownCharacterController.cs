@@ -31,7 +31,7 @@ namespace Cainos.PixelArtTopDown_Basic
         [SerializeField] private Rigidbody2D rb;
         private Vector2 dir;
 
-        private float balanceValue;
+        [SerializeField] [Range(-1f, 1f)] private float balanceValue;
         private int inventoryWeight;
 
         // Right = False
@@ -91,7 +91,7 @@ namespace Cainos.PixelArtTopDown_Basic
 
         private void Update()
         {
-            if(moveState != MoveState.Recovering && moveState != MoveState.Falling)
+            if(moveState != MoveState.Recovering || moveState != MoveState.Falling)
             {
                 moveState = Input.GetKey(KeyCode.LeftShift) ? MoveState.Sprinting : MoveState.Walking;
                 dir = Vector2.zero;
@@ -176,49 +176,60 @@ namespace Cainos.PixelArtTopDown_Basic
                 moveState = MoveState.Recovering;
             }
 
-            Animations();
-
-            if(period > 5f)
+            if (balanceValue >= 0.9f || balanceValue <= -0.9f)
             {
+                rb.velocity = Vector2.zero;
+                moveState = MoveState.Recovering;
+                Debug.Log("Recovering");
+            }
+
+            Animations();
+            Balance();
+
+            
+        }
+
+        private void Balance()
+        {
+            if (period > 2f)
+            {
+                if (moveState == MoveState.Recovering)
+                {
+                    moveState = MoveState.Walking;
+                    balanceValue = 0;
+                }
+
                 inventoryWeight = _inventory.GetTotalItemCount();
                 if (inventoryWeight >= maxInventoryWeight)
                 {
                     if (!balanceSideSwitch)
                     {
                         balanceValue += 0.2f;
-                    }   
+                    }
                     else if (balanceSideSwitch)
                     {
                         balanceValue -= 0.2f;
-                    }                      
+                    }
                 }
                 Mathf.Clamp(balanceValue, -1, 1);
 
                 period = 0;
             }
 
-            if (balanceValue == 0)
+            if (balanceValue <= 0.2f && balanceValue >= -0.2f)
             {
                 balanceSideSwitch = !balanceSideSwitch;
             }
 
-            if (balanceValue < 0)
+            if (balanceValue <= 0)
             {
                 balanceLeftFill.fillAmount = Mathf.Abs(balanceValue);
+                balanceRightFill.fillAmount = 0;
             }
-            else if (balanceValue > 0)
+            else if (balanceValue >= 0)
             {
                 balanceRightFill.fillAmount = Mathf.Abs(balanceValue);
-            }
-
-            if(balanceValue >= 0.9f || balanceValue <= -0.9f)
-            {
-                moveState = MoveState.Falling;
-                balanceValue = 0.0f;
-            }
-            else
-            {
-                moveState = MoveState.Walking;
+                balanceLeftFill.fillAmount = 0;
             }
 
             period += Time.deltaTime;
